@@ -13,13 +13,25 @@ $(document).keydown(function (e) {
         },100);
     }
 });
+$(document).click(function (e) { 
+    if (!started){
+        $("body").removeClass("game-over");
+        started=true;
+        setTimeout(function(){
+            nextColor();
+        },100);
+    }
+    
+});
 
 $(".btn").click(function () { 
-    var playerColor=$(this).attr("id");
-    playerList.push(playerColor);
-    makeSound(playerColor);
-    press(playerColor);
-    checkAnswer()
+    if (started){
+        var playerColor=$(this).attr("id");
+        playerList.push(playerColor);
+        makeSound(playerColor);
+        press(playerColor);
+        checkAnswer()
+    }
 });
 
 function nextColor(){
@@ -42,9 +54,11 @@ function checkAnswer(){
     }
     else{
         makeSound("wrong");
-        gameOver();
         $("body").addClass("game-over");
         $("#level-title").text("Your answer is wrong, type any key to restart");
+        setTimeout(function(){
+            gameOver();
+        },100);
     }
 }
 function gameOver(){
